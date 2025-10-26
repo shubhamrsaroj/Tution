@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "@exam_prep_mongodb_uri",
+    "JWT_SECRET": "@exam_prep_jwt_secret",
+    "EMAIL_USER": "@exam_prep_email_user",
+    "EMAIL_PASS": "@exam_prep_email_pass",
+    "FRONTEND_URL": "@exam_prep_frontend_url"
+  }
+}
