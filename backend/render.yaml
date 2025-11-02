@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: exam-prep-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://exam_platform_user:X9f$mK2p7Lq3N6bR5wS8hF1tJ4zP2!@cluster.mongodb.net/exam_learning_platform?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: zX8%kP4#uL2!mN6^bR3@wS5*hF1$tK9&jQ7vD5~nB6
+      - key: EMAIL_USER
+        value: shubhamrsaroj229@gmail.com
+      - key: EMAIL_PASS
+        value: efclfylixqlzaftc
+      - key: FRONTEND_URL
+        value: https://exam-prep-platform.netlify.app
