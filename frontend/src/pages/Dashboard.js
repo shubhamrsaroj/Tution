@@ -13,13 +13,8 @@ import {
   Award,
   Calendar,
   Globe,
-  Play,
   Shield,
   Users,
-  Youtube,
-  Instagram,
-  Send,
-  Linkedin
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
