@@ -25,7 +25,6 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "@exam_prep_api_url",
     "MONGODB_URI": "@exam_prep_mongodb_uri",
     "JWT_SECRET": "@exam_prep_jwt_secret",
     "EMAIL_USER": "@exam_prep_email_user",
