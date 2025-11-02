@@ -1,8 +1,0 @@
-[build]
-  functions = "functions"
-  command = "echo 'Backend build completed'"
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/server"
-  status = 200
