@@ -9,4 +9,4 @@
   status = 200
 
 [build.environment]
-  REACT_APP_API_URL = "https://exam-prep-backend.render.com/api" 
+  REACT_APP_API_URL = "https://tution-dtn6.onrender.com" 
