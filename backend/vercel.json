@@ -17,6 +17,7 @@
     "JWT_SECRET": "a_very_long_and_secure_random_string_at_least_32_characters_long",
     "EMAIL_USER": "shubhamrsaroj229@gmail.com",
     "EMAIL_PASS": "efclfylixqlzaftc",
-    "FRONTEND_URL": "https://tution.vercel.app"
+    "FRONTEND_URL": "https://tution.vercel.app",
+    "REACT_APP_API_URL": "https://tution-backend.vercel.app/api"
   }
 }
