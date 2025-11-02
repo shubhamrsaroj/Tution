@@ -15,3 +15,5 @@ services:
         value: efclfylixqlzaftc
       - key: FRONTEND_URL
         value: https://smartiqq.netlify.app
+      - key: PORT
+        value: 10000
