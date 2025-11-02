@@ -25,11 +25,11 @@
     }
   ],
   "env": {
-    "MONGODB_URI": "mongodb+srv://shubhamrsaroj229:sinpluscos12@atlascluster.1rzraz5.mongodb.net/smartiq?retryWrites=true&w=majority&appName=AtlasCluster",
-    "JWT_SECRET": "a_very_long_and_secure_random_string_at_least_32_characters_long",
+    "MONGODB_URI": "mongodb+srv://exam_platform_user:X9f$mK2p7Lq3N6bR5wS8hF1tJ4zP2!@cluster.mongodb.net/exam_learning_platform?retryWrites=true&w=majority",
+    "JWT_SECRET": "zX8%kP4#uL2!mN6^bR3@wS5*hF1$tK9&jQ7vD5~nB6",
     "EMAIL_USER": "shubhamrsaroj229@gmail.com",
     "EMAIL_PASS": "efclfylixqlzaftc",
-    "FRONTEND_URL": "https://tution.vercel.app"
-    
+    "FRONTEND_URL": "https://tution.vercel.app",
+    "REACT_APP_API_URL": "https://tution-backend.vercel.app/api"
   }
 }
