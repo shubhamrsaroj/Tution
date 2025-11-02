@@ -26,6 +26,7 @@ import { useAuth } from '../context/AuthContext';
 import Logo from '../components/Logo';  // Import the new Logo component
 import QuickTools from '../components/QuickTools';
 import SocialLinks from '../components/SocialLinks';  // Import the new SocialLinks component
+import OfflineTutionPhotos from '../components/OfflineTutionPhotos.js';  // Import the new OfflineTutionPhotos component
 
 // Dummy Exam Data
 const DUMMY_EXAMS = [
@@ -298,7 +299,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-10">
+      <div className="flex-1 p-10 overflow-y-auto">
         <div className="grid grid-cols-4 gap-6 mb-10">
           {dashboardStats.map((stat, index) => (
             <DashboardCard key={index} {...stat} />
@@ -357,6 +358,9 @@ const Dashboard = () => {
                   ))}
                 </div>
               </div>
+
+              {/* Add Offline Tution Photos section */}
+              <OfflineTutionPhotos />
             </div>
           )}
           
