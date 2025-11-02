@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": { 
+        "distDir": "frontend/build",
+        "buildCommand": "npm run build"
+      }
+    },
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/build/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_URL": "@exam_prep_api_url",
+    "MONGODB_URI": "@exam_prep_mongodb_uri",
+    "JWT_SECRET": "@exam_prep_jwt_secret",
+    "EMAIL_USER": "@exam_prep_email_user",
+    "EMAIL_PASS": "@exam_prep_email_pass",
+    "FRONTEND_URL": "@exam_prep_frontend_url"
+  }
+}
