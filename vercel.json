@@ -25,8 +25,8 @@
     }
   ],
   "env": {
-    "MONGODB_URI": "mongodb+srv://shubhamrsaroj229:sinpluscos12@atlascluster.1rzraz5.mongodb.net/tution?retryWrites=true&w=majority&appName=AtlasCluster",
-    "JWT_SECRET": "a-long-random-secret-key-for-jwt",
+    "MONGODB_URI": "mongodb+srv://shubhamrsaroj229:sinpluscos12@atlascluster.1rzraz5.mongodb.net/smartiq?retryWrites=true&w=majority&appName=AtlasCluster",
+    "JWT_SECRET": "a_very_long_and_secure_random_string_at_least_32_characters_long",
     "EMAIL_USER": "shubhamrsaroj229@gmail.com",
     "EMAIL_PASS": "efclfylixqlzaftc",
     "FRONTEND_URL": "https://tution.vercel.app"
