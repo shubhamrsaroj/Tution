@@ -1,0 +1,6 @@
+{
+    "buildCommand": "npm install",
+    "startCommand": "node server.js",
+    "buildDir": ".",
+    "startupCommand": "node server.js"
+  }
