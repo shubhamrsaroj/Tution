@@ -21,7 +21,8 @@ const corsOptions = {
       'http://127.0.0.1:3000',
       process.env.FRONTEND_URL,
       // Add your Vercel frontend URL here
-      'https://exam-prep-platform-frontend.vercel.app'
+      'https://exam-prep-platform-frontend.vercel.app',
+      'https://smartiqq.netlify.app'
     ];
     
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
