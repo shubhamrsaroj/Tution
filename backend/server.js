@@ -14,15 +14,14 @@ const PORT = process.env.PORT || 10000;
 // CORS Configuration
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
     const allowedOrigins = [
       'http://localhost:3000', 
       'https://localhost:3000',
       'http://127.0.0.1:3000',
       process.env.FRONTEND_URL,
-      // Add your Vercel frontend URL here
       'https://exam-prep-platform-frontend.vercel.app',
-      'https://smartiqq.netlify.app'
+      'https://smartiqq.netlify.app',
+      'https://smartiqacademy.netlify.app'
     ];
     
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -58,7 +57,9 @@ app.use('/api/exam-categories', examCategoryRoutes);
 app.get('/', (req, res) => {
   res.status(200).json({ 
     message: 'SmartIQ Exam Prep Platform Backend is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    port: PORT,
+    environment: process.env.NODE_ENV
   });
 });
 
@@ -71,12 +72,11 @@ app.use((err, req, res, next) => {
   });
 });
 
-// For Vercel serverless functions
-export default app;
+// Always start the server
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`Listening on all network interfaces`);
+});
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+export default server;
