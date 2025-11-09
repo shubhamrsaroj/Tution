@@ -34,17 +34,21 @@ export const register = async (req, res) => {
 
     await user.save();
 
-    // Return credentials for direct login
+    // Generate JWT for immediate login
+    const token = jwt.sign(
+      { id: user._id, role: user.role }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
+
     res.status(201).json({ 
       message: 'User registered successfully',
-      credentials: {
-        email: email,
-        password: password  // IMPORTANT: Only send this for immediate login flow
-      },
+      token,
       user: { 
         id: user._id, 
         username: user.username, 
         email: user.email, 
+        role: user.role,
         firstName: user.firstName, 
         lastName: user.lastName
       } 

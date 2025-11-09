@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../services/authService';
+import Logo from '../components/Logo';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,40 +26,53 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const response = await registerUser(formData);
+      // Prepare data for registration
+      const { confirmPassword, ...userData } = formData;
+      const response = await registerUser(userData);
       
-      // Store credentials for auto-fill in login
-      localStorage.setItem('registeredCredentials', JSON.stringify({
-        email: response.credentials.email,
-        password: response.credentials.password
-      }));
-
-      // Show success message and redirect to login
-      alert('Registration successful! Redirecting to login...');
-      navigate('/login');
+      // Navigate to OTP verification
+      navigate('/verify-otp', { 
+        state: { 
+          email: userData.email,
+          userId: response.userId,
+          message: response.message 
+        } 
+      });
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
+        <div className="text-center">
+          <Logo className="mx-auto h-12 w-auto" />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create Your Account
+            Create your account
           </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Or{' '}
+            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+              sign in to existing account
+            </Link>
+          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
-            {/* First Name */}
-            <div className="mb-4">
+            <div>
               <label htmlFor="firstName" className="sr-only">First Name</label>
               <input
                 id="firstName"
@@ -71,9 +85,7 @@ const Register = () => {
                 onChange={handleChange}
               />
             </div>
-
-            {/* Last Name */}
-            <div className="mb-4">
+            <div>
               <label htmlFor="lastName" className="sr-only">Last Name</label>
               <input
                 id="lastName"
@@ -86,12 +98,10 @@ const Register = () => {
                 onChange={handleChange}
               />
             </div>
-
-            {/* Email */}
-            <div className="mb-4">
-              <label htmlFor="email" className="sr-only">Email address</label>
+            <div>
+              <label htmlFor="email-address" className="sr-only">Email address</label>
               <input
-                id="email"
+                id="email-address"
                 name="email"
                 type="email"
                 autoComplete="email"
@@ -102,27 +112,33 @@ const Register = () => {
                 onChange={handleChange}
               />
             </div>
-
-            {/* Password */}
-            <div className="relative">
+            <div>
               <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"}
+                type="password"
+                autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
               />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-              >
-                {showPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
-              </button>
+            </div>
+            <div>
+              <label htmlFor="confirm-password" className="sr-only">Confirm Password</label>
+              <input
+                id="confirm-password"
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
             </div>
           </div>
 
@@ -135,9 +151,10 @@ const Register = () => {
           <div>
             <button
               type="submit"
+              disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Register
+              {loading ? 'Registering...' : 'Register'}
             </button>
           </div>
         </form>
