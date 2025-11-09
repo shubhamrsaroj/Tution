@@ -2,83 +2,51 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://tution-dtn6.onrender.com/api';
 
+// Register user
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    const response = await axios.post(`${API_URL}/register`, userData);
     return response.data;
   } catch (error) {
-    throw error.response ? error.response.data : new Error('Network error');
+    console.error('Registration error:', error.response?.data || error.message);
+    throw error;
   }
 };
 
-export const verifyOTP = async (otpData) => {
+// Login user
+export const loginUser = async (loginData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/verify-otp`, otpData);
+    const response = await axios.post(`${API_URL}/login`, loginData);
     return response.data;
   } catch (error) {
-    throw error.response ? error.response.data : new Error('Network error');
+    console.error('Login error:', error.response?.data || error.message);
+    throw error;
   }
 };
 
-export const loginUser = async (email, password) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-    if (response.data.token) {
-      localStorage.setItem('user', JSON.stringify(response.data));
-    }
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Network error');
-  }
-};
-
+// Logout user
 export const logoutUser = () => {
-  localStorage.removeItem('user');
+  // Remove user token and info from local storage
+  localStorage.removeItem('userToken');
+  localStorage.removeItem('userInfo');
 };
 
+// Get current user
 export const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+  const userToken = localStorage.getItem('userToken');
+  const userInfo = localStorage.getItem('userInfo');
+  
+  return userToken && userInfo 
+    ? { 
+        token: userToken, 
+        user: JSON.parse(userInfo) 
+      } 
+    : null;
 };
 
-export const forgotPassword = async (email) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Network error');
-  }
-};
-
-export const resetPassword = async (token, newPassword) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/reset-password`, { 
-      token, 
-      newPassword 
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Network error');
-  }
-};
-
-export const validateResetToken = async (token) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/validate-reset-token`, { token });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Invalid or expired reset token');
-  }
-};
-
-const authService = {
+export default {
   registerUser,
-  verifyOTP,
   loginUser,
   logoutUser,
-  getCurrentUser,
-  forgotPassword,
-  resetPassword,
-  validateResetToken
+  getCurrentUser
 };
-
-export default authService;
