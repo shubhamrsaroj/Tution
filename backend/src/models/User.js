@@ -18,27 +18,21 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true,
-    minlength: 3
+    minlength: 3,
+    lowercase: true
   },
   email: {
     type: String,
     required: true,
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
   password: {
     type: String,
     required: true,
     minlength: 6
-  },
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
-  otp: {
-    code: String,
-    expiresAt: Date
   },
   role: {
     type: String,
@@ -49,6 +43,19 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}, {
+  // Add index to improve query performance and enforce uniqueness
+  indexes: [
+    { fields: { email: 1 }, unique: true },
+    { fields: { username: 1 }, unique: true }
+  ]
+});
+
+// Pre-save hook to ensure lowercase email and username
+UserSchema.pre('save', function(next) {
+  this.email = this.email.toLowerCase();
+  this.username = this.username.toLowerCase();
+  next();
 });
 
 export default mongoose.model('User', UserSchema);

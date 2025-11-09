@@ -4,32 +4,6 @@ import { sendPasswordResetEmail } from '../utils/emailService.js';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
-
-// Generate OTP
-const generateOTP = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
-
-// Send OTP Email
-const sendOTPEmail = async (email, otp) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
-  });
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Your OTP for Exam Preparation Platform',
-    text: `Your OTP is: ${otp}. It will expire in 10 minutes.`
-  };
-
-  await transporter.sendMail(mailOptions);
-};
 
 // Register User
 export const register = async (req, res) => {
@@ -37,7 +11,7 @@ export const register = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     // Create username from first and last name
-    const username = `${firstName}${lastName}`.toLowerCase().replace(/\s+/g, '');
+    const username = `${firstName}${lastName}${Math.floor(Math.random() * 1000)}`.toLowerCase().replace(/\s+/g, '');
 
     // Check if user already exists
     let user = await User.findOne({ $or: [{ email }, { username }] });
@@ -49,61 +23,51 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Generate OTP
-    const otp = generateOTP();
-    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
     // Create new user
     user = new User({
       firstName,
       lastName,
       username,
       email,
-      password: hashedPassword,
-      otp: { 
-        code: otp, 
-        expiresAt: otpExpires 
-      }
+      password: hashedPassword
     });
 
     await user.save();
 
-    // Send OTP Email
-    await sendOTPEmail(email, otp);
+    // Generate JWT for immediate login
+    const token = jwt.sign(
+      { id: user._id, role: user.role }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
 
     res.status(201).json({ 
-      message: 'User registered. Please verify your email.',
-      userId: user._id 
+      message: 'User registered successfully',
+      token,
+      user: { 
+        id: user._id, 
+        username: user.username, 
+        email: user.email, 
+        role: user.role,
+        firstName: user.firstName, 
+        lastName: user.lastName
+      } 
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-};
-
-// Verify OTP
-export const verifyOTP = async (req, res) => {
-  try {
-    const { userId, otp } = req.body;
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    
+    // Handle unique constraint violations
+    if (error.code === 11000) {
+      return res.status(400).json({ 
+        message: 'Username or email is already taken',
+        field: error.message.includes('email') ? 'email' : 'username'
+      });
     }
 
-    // Check OTP
-    if (user.otp.code !== otp || user.otp.expiresAt < new Date()) {
-      return res.status(400).json({ message: 'Invalid or expired OTP' });
-    }
-
-    // Mark user as verified
-    user.isVerified = true;
-    user.otp = undefined;
-    await user.save();
-
-    res.status(200).json({ message: 'Email verified successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ 
+      message: 'Server error', 
+      error: error.message 
+    });
   }
 };
 
@@ -129,31 +93,13 @@ export const login = async (req, res) => {
 
     if (!user) {
       console.log(`Login attempt failed: No user found with email ${normalizedEmail}`);
-      console.log('Existing users:', await User.find({}, 'email'));
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Detailed user verification logging
-    console.log('User found:', {
-      email: user.email,
-      isVerified: user.isVerified,
-      username: user.username
-    });
-
-    // Check if verified
-    if (!user.isVerified) {
-      console.log(`Login attempt failed: User ${normalizedEmail} is not verified`);
-      return res.status(403).json({ message: 'Please verify your email' });
-    }
-
-    // Compare passwords with detailed logging
+    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       console.log(`Login attempt failed: Incorrect password for user ${normalizedEmail}`);
-      console.log('Password comparison details:', {
-        inputPasswordLength: password.length,
-        storedPasswordHash: user.password.substring(0, 20) + '...' // Partial hash for debugging
-      });
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -173,7 +119,6 @@ export const login = async (req, res) => {
         username: user.username, 
         email: user.email, 
         role: user.role,
-        // Add these fields to support full name display
         firstName: user.firstName || '', 
         lastName: user.lastName || ''
       } 
