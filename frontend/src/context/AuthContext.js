@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
-    setUser(userData.user);
+    setUser(userData);
     setIsAuthenticated(true);
   };
 
