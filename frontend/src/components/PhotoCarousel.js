@@ -1,99 +1,117 @@
 import React, { useState, useEffect } from 'react';
-
-const carouselItems = [
-  {
-    id: 1,
-    title: 'Prepare for 150+ Exams',
-    description: 'Select your exams today and let us help you in your preparations for SSC, IBPS, Banking, Railways, Defense, TET, Lekhpal, Patwari, CCC, NEET, UPSC, Airforce, Navy and many more',
-    buttonText: 'Start Preparation Today',
-    image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=='
-  },
-  {
-    id: 2,
-    title: 'Daily Current Affairs',
-    description: 'Stay updated with the latest current affairs and general knowledge to boost your exam preparation',
-    buttonText: 'Read Latest News',
-    image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=='
-  },
-  {
-    id: 3,
-    title: 'Mock Tests & Practice',
-    description: 'Take unlimited mock tests, solve previous year question papers, and track your progress',
-    buttonText: 'Start Mock Test',
-    image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACklEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg=='
-  }
-];
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PhotoCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % carouselItems.length);
-  };
+  // High-quality Unsplash images related to education and exam preparation
+  const carouselImages = [
+    {
+      src: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      alt: "Exam Preparation Study Materials",
+      title: "Comprehensive Study Resources",
+      description: "Access top-quality study materials for competitive exams"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      alt: "Mock Test Preparation",
+      title: "Practice Mock Tests",
+      description: "Enhance your exam readiness with comprehensive mock tests"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      alt: "Current Affairs Study",
+      title: "Stay Updated with Current Affairs",
+      description: "Latest news and information to boost your exam preparation"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      alt: "Exam Preparation Classroom",
+      title: "Expert Guided Learning",
+      description: "Professional guidance for your exam success"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      alt: "Banking and Competitive Exams",
+      title: "Prepare for Competitive Exams",
+      description: "Comprehensive preparation for banking and government exams"
+    }
+  ];
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + carouselItems.length) % carouselItems.length);
-  };
-
+  // Auto-slide functionality
   useEffect(() => {
-    const slideInterval = setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prevSlide) => 
+        (prevSlide + 1) % carouselImages.length
+      );
+    }, 5000); // Change slide every 5 seconds
+
     return () => clearInterval(slideInterval);
   }, []);
 
-  const currentItem = carouselItems[currentSlide];
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => 
+      (prevSlide + 1) % carouselImages.length
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prevSlide) => 
+      prevSlide === 0 ? carouselImages.length - 1 : prevSlide - 1
+    );
+  };
 
   return (
-    <div className="relative w-full h-[500px] bg-gradient-to-r from-blue-50 to-blue-100 overflow-hidden">
-      {/* Slide Content */}
-      <div className="absolute inset-0 flex items-center container mx-auto px-4 z-10">
-        <div className="w-full md:w-1/2 space-y-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-            {currentItem.title}
-          </h1>
-          <p className="text-gray-700 text-lg">
-            {currentItem.description}
-          </p>
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition duration-300">
-            {currentItem.buttonText}
-          </button>
-        </div>
+    <div className="relative w-full h-[500px] overflow-hidden">
+      {/* Carousel Images */}
+      <div className="relative h-full w-full">
+        {carouselImages.map((image, index) => (
+          <div 
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+              currentSlide === index ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {/* Image */}
+            <img 
+              src={image.src} 
+              alt={image.alt} 
+              className="w-full h-full object-cover"
+            />
+            
+            {/* Overlay Content */}
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+              <div className="text-center text-white max-w-2xl px-4">
+                <h2 className="text-4xl font-bold mb-4">{image.title}</h2>
+                <p className="text-xl">{image.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Background Image */}
-      <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden md:block">
-        <img 
-          src={currentItem.image} 
-          alt={currentItem.title} 
-          className="object-contain h-full w-full bg-blue-200"
-        />
-      </div>
-
-      {/* Navigation Arrows */}
+      {/* Navigation Buttons */}
       <button 
-        onClick={prevSlide} 
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white/75 rounded-full p-2 z-20"
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white/75 rounded-full p-2 z-10"
       >
-        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
+        <ChevronLeft className="text-gray-800" />
       </button>
       <button 
-        onClick={nextSlide} 
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white/75 rounded-full p-2 z-20"
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/50 hover:bg-white/75 rounded-full p-2 z-10"
       >
-        <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+        <ChevronRight className="text-gray-800" />
       </button>
 
       {/* Slide Indicators */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {carouselItems.map((_, index) => (
-          <button 
+        {carouselImages.map((_, index) => (
+          <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`h-2 w-2 rounded-full ${
-              currentSlide === index ? 'bg-blue-600' : 'bg-gray-300'
+            className={`h-3 w-3 rounded-full ${
+              currentSlide === index ? 'bg-white' : 'bg-white/50'
             }`}
           />
         ))}

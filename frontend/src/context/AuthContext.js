@@ -10,20 +10,34 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = authService.getCurrentUser();
+    console.group('AuthContext Initialization');
     console.log('Stored User:', storedUser);
+    
     if (storedUser) {
-      console.log('Setting user:', storedUser);
-      console.log('User Username:', storedUser?.user.username);
-      console.log('User Email:', storedUser?.user.email);
+      console.log('Setting user:', storedUser.user);
+      console.log('User Username:', storedUser.user?.username);
+      console.log('User Email:', storedUser.user?.email);
+      
       setUser(storedUser.user);
       setIsAuthenticated(true);
     }
+    
+    console.groupEnd();
     setIsLoading(false);
   }, []);
 
   const login = (userData) => {
-    setUser(userData);
+    console.group('Login Process');
+    console.log('User Data:', userData);
+    
+    // Ensure we're setting the correct user object
+    const userToSet = userData.user || userData;
+    
+    setUser(userToSet);
     setIsAuthenticated(true);
+    
+    console.log('Authenticated User:', userToSet);
+    console.groupEnd();
   };
 
   const logout = () => {

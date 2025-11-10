@@ -13,7 +13,10 @@ import {
   Youtube,
   Instagram,
   Send,
-  Linkedin
+  Linkedin,
+  Target,
+  Rocket,
+  Clock
 } from 'lucide-react';
 import SocialLinks from '../components/SocialLinks';
 import PhotoCarousel from '../components/PhotoCarousel';
@@ -21,182 +24,174 @@ import PhotoCarousel from '../components/PhotoCarousel';
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const features = [
+  const keyFeatures = [
     {
-      icon: <BookOpen className="h-12 w-12 text-indigo-600" />,
-      title: "Comprehensive Study Material",
-      description: "Access a wide range of study materials for various exams."
+      icon: <Target className="h-12 w-12 text-indigo-600" />,
+      title: "Targeted Preparation",
+      description: "Personalized learning paths for your specific exam goals",
+      color: "bg-indigo-50",
+      hoverColor: "hover:bg-indigo-100"
     },
     {
-      icon: <CheckCircle className="h-12 w-12 text-green-600" />,
-      title: "Practice Tests",
-      description: "Take mock tests and assess your preparation level."
+      icon: <Rocket className="h-12 w-12 text-green-600" />,
+      title: "Comprehensive Coverage",
+      description: "Extensive study materials across 150+ competitive exams",
+      color: "bg-green-50",
+      hoverColor: "hover:bg-green-100"
     },
     {
-      icon: <TrendingUp className="h-12 w-12 text-blue-600" />,
-      title: "Performance Analysis",
-      description: "Get detailed insights into your exam preparation."
+      icon: <Clock className="h-12 w-12 text-blue-600" />,
+      title: "Adaptive Learning",
+      description: "Smart technology that adapts to your learning pace",
+      color: "bg-blue-50",
+      hoverColor: "hover:bg-blue-100"
     }
   ];
 
   const examCategories = [
     {
-      name: "Central Government Exams",
+      name: "Government Exams",
       icon: <Shield className="h-8 w-8 text-indigo-600" />,
-      exams: ["UPSC", "SSC", "Railways"]
+      exams: ["UPSC", "SSC", "Railways"],
+      image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
     },
     {
-      name: "State Government Exams",
-      icon: <Globe className="h-8 w-8 text-green-600" />,
-      exams: ["State PSC", "State Police", "State Services"]
-    },
-    {
-      name: "Banking & Insurance",
+      name: "Banking Exams",
       icon: <Award className="h-8 w-8 text-blue-600" />,
-      exams: ["IBPS", "SBI", "Insurance"]
+      exams: ["IBPS", "SBI", "RBI"],
+      image: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
     },
     {
       name: "Teaching Exams",
-      icon: <Users className="h-8 w-8 text-purple-600" />,
-      exams: ["TET", "CTET", "NET"]
+      icon: <Users className="h-8 w-8 text-green-600" />,
+      exams: ["TET", "CTET", "NET"],
+      image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+    },
+    {
+      name: "State Level Exams",
+      icon: <Globe className="h-8 w-8 text-purple-600" />,
+      exams: ["State PSC", "Police", "Revenue"],
+      image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
     }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      
       <PhotoCarousel />
       
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-indigo-600 to-purple-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-32">
-          <div className="text-center">
-            <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-              <span className="block xl:inline">Exam Preparation</span>{' '}
-              <span className="block text-indigo-200 xl:inline">Platform</span>
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-indigo-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Your comprehensive solution for exam preparation, offering personalized learning paths and expert guidance.
-            </p>
-            <div className="mt-8 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
-              <div className="rounded-md shadow">
-                <button
-                  onClick={() => navigate('/register')}
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 md:py-4 md:text-lg md:px-10 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
-                >
-                  Get Started
-                  <Play className="ml-3 h-5 w-5" />
-                </button>
-              </div>
-              <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                <button
-                  onClick={() => navigate('/login')}
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
-                >
-                  <FileText className="mr-3 h-5 w-5" />
-                  Learn More
-                </button>
-              </div>
-            </div>
-
-            {/* Social Links */}
-            <div className="mt-8">
-              <h4 className="text-sm text-indigo-200 mb-4">Connect with SmartIQ Academy</h4>
-              <SocialLinks 
-                variant="default" 
-                className="justify-center text-white hover:text-indigo-100" 
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="py-16 bg-white">
+      {/* Key Features Section */}
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Features</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Your Path to Exam Success
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              Why Choose SmartIQ Academy?
+            </h2>
+            <p className="mt-4 text-xl text-gray-600">
+              Empowering your exam preparation with cutting-edge learning solutions
             </p>
           </div>
-
-          <div className="mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <div 
-                  key={index} 
-                  className="text-center p-6 bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out"
-                >
-                  <div className="flex justify-center mb-4">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {keyFeatures.map((feature, index) => (
+              <div 
+                key={index} 
+                className={`p-8 rounded-xl shadow-lg text-center transition-all duration-300 ${feature.color} ${feature.hoverColor}`}
+              >
+                <div className="flex justify-center mb-6">
+                  {feature.icon}
                 </div>
-              ))}
-            </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Exam Categories Section */}
-      <div className="bg-gray-100 py-16">
+      <section className="bg-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Exam Categories</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Prepare for Various Exams
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              Exam Categories
+            </h2>
+            <p className="mt-4 text-xl text-gray-600">
+              Comprehensive preparation for diverse competitive exams
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {examCategories.map((category, index) => (
               <div 
                 key={index} 
-                className="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition-all duration-300 ease-in-out"
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
-                <div className="flex justify-center mb-4">
-                  {category.icon}
+                <div className="p-6 text-center">
+                  <div className="flex justify-center mb-4">
+                    {category.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {category.name}
+                  </h3>
+                  <div className="space-y-1 mb-4">
+                    {category.exams.map((exam, examIndex) => (
+                      <p key={examIndex} className="text-sm text-gray-600">
+                        {exam}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{category.name}</h3>
-                <div className="space-y-1">
-                  {category.exams.map((exam, examIndex) => (
-                    <p key={examIndex} className="text-sm text-gray-600">{exam}</p>
-                  ))}
+                <div className="overflow-hidden">
+                  <img 
+                    src={category.image} 
+                    alt={category.name} 
+                    className="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                  />
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Call to Action */}
-      <div className="bg-indigo-600">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between">
-          <div>
-            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              Ready to Start Your Exam Preparation?
-            </h2>
-            <p className="mt-2 text-lg leading-6 text-indigo-200">
-              Join thousands of successful candidates who have transformed their exam preparation.
-            </p>
-          </div>
-          <div>
+      <section className="bg-indigo-700 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl mb-6">
+            Start Your Exam Preparation Journey Today
+          </h2>
+          <p className="text-xl text-indigo-200 mb-8">
+            Join thousands of successful candidates who have transformed their exam preparation
+          </p>
+          <div className="flex justify-center space-x-4">
             <button
               onClick={() => navigate('/register')}
-              className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-white text-indigo-600 hover:bg-indigo-50 md:py-4 md:text-lg md:px-10 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+              className="bg-white text-indigo-700 px-8 py-3 rounded-md text-lg font-semibold hover:bg-indigo-50 transition duration-300 flex items-center"
             >
               Create Free Account
+              <Play className="ml-2 h-5 w-5" />
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="bg-indigo-500 text-white px-8 py-3 rounded-md text-lg font-semibold hover:bg-indigo-600 transition duration-300 flex items-center"
+            >
+              Login
+              <FileText className="ml-2 h-5 w-5" />
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Social Media Links */}
-      <div className="bg-gray-100 py-12">
+      {/* Social Media Section */}
+      <section className="bg-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Connect with Smart IQ Academy</h2>
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-8">
+            Connect with SmartIQ Academy
+          </h2>
           <div className="flex justify-center space-x-8">
             <a 
               href="https://youtube.com/@smartiqacademy-c8m?si=jMhu9r73ygOqbzsJ" 
@@ -232,7 +227,7 @@ const HomePage = () => {
             </a>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

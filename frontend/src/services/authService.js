@@ -1,19 +1,8 @@
-import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL || 'https://tution-dtn6.onrender.com/api';
+import apiClient from './apiInterceptor';
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/register`, userData);
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Network error');
-  }
-};
-
-export const verifyOTP = async (otpData) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/verify-otp`, otpData);
+    const response = await apiClient.post('/auth/register', userData);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');
@@ -22,10 +11,14 @@ export const verifyOTP = async (otpData) => {
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+    const response = await apiClient.post('/auth/login', { email, password });
+    
+    // Store token and user info
     if (response.data.token) {
-      localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem('userToken', response.data.token);
+      localStorage.setItem('userInfo', JSON.stringify(response.data.user));
     }
+    
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');
@@ -33,16 +26,25 @@ export const loginUser = async (email, password) => {
 };
 
 export const logoutUser = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('userToken');
+  localStorage.removeItem('userInfo');
 };
 
 export const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('userToken');
+  const userInfo = localStorage.getItem('userInfo');
+  
+  return token && userInfo 
+    ? { 
+        token: token, 
+        user: JSON.parse(userInfo) 
+      } 
+    : null;
 };
 
 export const forgotPassword = async (email) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/forgot-password`, { email });
+    const response = await apiClient.post('/auth/forgot-password', { email });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');
@@ -51,7 +53,7 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (token, newPassword) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/reset-password`, { 
+    const response = await apiClient.post('/auth/reset-password', { 
       token, 
       newPassword 
     });
@@ -63,7 +65,7 @@ export const resetPassword = async (token, newPassword) => {
 
 export const validateResetToken = async (token) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/validate-reset-token`, { token });
+    const response = await apiClient.post('/auth/validate-reset-token', { token });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Invalid or expired reset token');
@@ -72,7 +74,6 @@ export const validateResetToken = async (token) => {
 
 const authService = {
   registerUser,
-  verifyOTP,
   loginUser,
   logoutUser,
   getCurrentUser,
@@ -80,4 +81,5 @@ const authService = {
   resetPassword,
   validateResetToken
 };
+
 export default authService;
