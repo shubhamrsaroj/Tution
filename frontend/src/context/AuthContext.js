@@ -10,8 +10,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = authService.getCurrentUser();
+    console.log('Stored User:', storedUser);
     if (storedUser) {
-      setUser(storedUser);
+      console.log('Setting user:', storedUser);
+      console.log('User Username:', storedUser?.user.username);
+      console.log('User Email:', storedUser?.user.email);
+      setUser(storedUser.user);
       setIsAuthenticated(true);
     }
     setIsLoading(false);

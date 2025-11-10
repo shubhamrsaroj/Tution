@@ -136,6 +136,8 @@ const ExamProgressCard = ({ exam }) => {
 
 const Dashboard = () => {
   const { user, logout, isAuthenticated } = useAuth();
+
+  
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('overview');
 
@@ -152,6 +154,9 @@ const Dashboard = () => {
     const storedToken = localStorage.getItem('token');
     console.log('Stored User:', storedUser);
     console.log('Stored Token:', storedToken ? 'Token exists' : 'No token');
+
+    console.log('User Username:', user?.username);
+    console.log('User Email:', user?.email);
     
     // Detailed authentication check
     if (!isAuthenticated) {
@@ -251,8 +256,8 @@ const Dashboard = () => {
             <User className="h-8 w-8 text-indigo-600" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">{user?.username}</h2>
-            <p className="text-sm text-gray-500">{user?.email}</p>
+            <h2 className="text-xl font-bold text-gray-800">{user && user?.username ? user?.user.username : 'User'}</h2>
+            <p className="text-sm text-gray-500">{user?.user.email}</p>
           </div>
         </div>
 
@@ -278,6 +283,7 @@ const Dashboard = () => {
           >
             <LogOut className="h-5 w-5" />
             <span className="font-medium">Logout</span>
+            
           </button>
 
          
