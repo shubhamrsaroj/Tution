@@ -256,8 +256,8 @@ const Dashboard = () => {
             <User className="h-8 w-8 text-indigo-600" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">{user && user?.username ? user?.user.username : 'User'}</h2>
-            <p className="text-sm text-gray-500">{user?.user.email}</p>
+            <h2 className="text-xl font-bold text-gray-800">{user.username}</h2>
+            <p className="text-sm text-gray-500">{user.email}</p>
           </div>
         </div>
 
